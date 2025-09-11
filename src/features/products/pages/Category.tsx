@@ -6,9 +6,9 @@ import { useAuth } from "../../auth/service/useAuth";
 const Category = () => {
   const [editCategory, setEditCategory] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { getCategory, createCategory, deleteCategory, updateCategory } =
+  const { updateCategory, getCategory, createCategory, deleteCategory } =
     useCategory();
-  const [form] = Form.useForm();
+
   const { data } = getCategory();
   const { mutate } = createCategory();
   const { mutate: updateCategoryMutate } = updateCategory();
@@ -17,24 +17,33 @@ const Category = () => {
   const { data: profile } = getProfile();
   console.log(data);
 
+  const [form] = Form.useForm();
+
   const UserId = profile?.data?.id;
 
   const showModal = () => {
     setIsModalOpen(true);
+    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleEdit = (item: any) => {
+    setEditCategory(item);
+    form.setFieldsValue({ name: item.name });
+    setIsModalOpen(true);
+  };
 
   const onFinish = (values: any) => {
     if (editCategory) {
-      updateCategoryMutate({ id: editCategory.id, updated: values });
+      updateCategoryMutate({ id: editCategory.id, ...values });
     } else {
       mutate(values);
     }
-    setIsModalOpen(false);
+    form.resetFields();
     setEditCategory(null);
+    handleCancel();
   };
 
   return (
@@ -73,7 +82,7 @@ const Category = () => {
               layout="vertical"
               form={form}
               onFinish={onFinish}
-              initialValues={editCategory ? { name: editCategory.name } : {}}
+             
             >
               <Form.Item
                 label="Category Name"
@@ -110,11 +119,11 @@ const Category = () => {
             </h3>
 
             {UserId === item?.user?.id ? (
-              <div>
-                <button onClick={() => deleteCategoryMutate(item.id)}>
+              <div className="flex items-center justify-center gap-[6px]">
+                <button className="px-[10px] py-[5px] bg-[crimson] text-[#fff] rounded-[8px]" onClick={() => deleteCategoryMutate(item.id)}>
                   Delete
                 </button>
-                <button onClick={() => showModal()}>Update</button>
+                <button className="px-[10px] py-[5px] bg-[dodgerblue] text-[#fff] rounded-[8px]" onClick={() => handleEdit(item)}>Update</button>
               </div>
             ) : (
               ""

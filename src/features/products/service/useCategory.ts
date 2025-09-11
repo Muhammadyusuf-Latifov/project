@@ -27,13 +27,9 @@ export const useCategory = () => {
     });
   const updateCategory = () =>
     useMutation({
-      mutationFn: ({ id, updated }: { id: string; updated: any }) =>
-        api.put(`category/${id}`, updated).then((res) => res.data),
-      onSuccess: (data) => {
-        QueryClient.setQueryData([userKey], (item: any) =>
-          item.map((c: any) => (c.id === data.id ? data : c))
-        );
-      },
+      mutationFn: ({ id, ...body }: { id: string; name: string }) =>
+        api.patch(`category/${id}`, body).then((res) => res.data),
+      onSuccess: () => QueryClient.invalidateQueries({ queryKey: [userKey] }),
     });
   return { getCategory, createCategory, deleteCategory, updateCategory };
 };

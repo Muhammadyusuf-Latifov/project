@@ -1,77 +1,55 @@
-import { memo } from 'react';
+import { memo, useState } from "react";
+import { Button } from "antd";
 
-const ProductItem = () => {
+import { api } from "../../../shared/api";
+
+const ProductsTab = () => {
+  const [files, setFiles] = useState<null | FileList>(null);
+
+  const images = files && Array.from(files);
+
+  console.log(images);
+
+  const handleCreateProduct = () => {
+    // const newProduct = {
+    //   title: "Test 10",
+    //   description: "Lorem ipsum dolor",
+    //   price: 300,
+    //   categoryId: "1",
+    //   stock : 10,
+    // }
+
+    const formData = new FormData();
+
+    formData.append("title", "Test 11");
+    formData.append("description", "Lorem ipsum dolor emet");
+    formData.append("price", "300");
+    formData.append("categoryId", "1");
+    formData.append("stock", "5");
+
+    images?.forEach((item: File) => formData.append("images", item));
+
+    api.post("product", formData);
+  };
   return (
-    <div className="ProductItem">
-      <h2>ProductItem</h2>
-      <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-        <thead className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
-          <tr>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Title
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Description
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Price
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Images
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Stock
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">
-              Brand
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="bg-white hover:bg-green-50 transition-colors duration-300">
-            <td className="px-6 py-4 border-b border-gray-200 rounded-l-lg font-semibold">
-              Example Title
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">
-              This is a description
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">$199</td>
-            <td className="px-6 py-4 border-b border-gray-200">
-              <img
-                src="dd"
-                alt="image"
-                className="w-10 h-10 rounded-md inline-block mr-1"
-              />
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">20</td>
-            <td className="px-6 py-4 border-b border-gray-200 rounded-r-lg">
-              BrandName
-            </td>
-          </tr>
-          <tr className="bg-gray-50 hover:bg-blue-50 transition-colors duration-300">
-            <td className="px-6 py-4 border-b border-gray-200 rounded-l-lg font-semibold">
-              Another Title
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">
-              Another description
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">$299</td>
-            <td className="px-6 py-4 border-b border-gray-200">
-              <img
-                src="dd"
-                alt="image"
-                className="w-10 h-10 rounded-md inline-block mr-1"
-              />
-            </td>
-            <td className="px-6 py-4 border-b border-gray-200">15</td>
-            <td className="px-6 py-4 border-b border-gray-200 rounded-r-lg">
-              AnotherBrand
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <section className="p-3">
+      <input
+        type="file"
+        onChange={(e) => setFiles(e.target.files)}
+        multiple
+        accept="image/*"
+      />
+      <div>
+        {images?.map((item: File, inx: number) => (
+          <img key={inx} src={URL.createObjectURL(item)} width={200} alt="" />
+        ))}
+      </div>
+
+      <div className="flex justify-end my-2">
+        <Button onClick={handleCreateProduct}>Add Product</Button>
+      </div>
+    </section>
   );
 };
 
-export default memo(ProductItem);
+export default memo(ProductsTab);
