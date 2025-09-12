@@ -73,17 +73,12 @@ const Category = () => {
           </Button>
 
           <Modal
-            title="Add Category"
+            title={editCategory ? "Update Category" : "Add Category"}
             open={isModalOpen}
             onCancel={handleCancel}
             footer={null}
           >
-            <Form
-              layout="vertical"
-              form={form}
-              onFinish={onFinish}
-             
-            >
+            <Form layout="vertical" form={form} onFinish={onFinish}>
               <Form.Item
                 label="Category Name"
                 name="name"
@@ -104,32 +99,56 @@ const Category = () => {
                   Cancel
                 </button>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  {editCategory ? "Update" : "Create"}
                 </Button>
               </div>
             </Form>
           </Modal>
         </ConfigProvider>
       </div>
-      <div className="grid grid-cols-6 gap-[12px] mt-[25px]">
-        {data?.data?.map((item: any) => (
-          <div key={item.id} className="rounded-[12px] bg-gray-400 p-[12px]">
-            <h3 className="text-[18px] text-[#fff] text-center font-semibold">
-              {item.name}
-            </h3>
-
-            {UserId === item?.user?.id ? (
-              <div className="flex items-center justify-center gap-[6px]">
-                <button className="px-[10px] py-[5px] bg-[crimson] text-[#fff] rounded-[8px]" onClick={() => deleteCategoryMutate(item.id)}>
-                  Delete
-                </button>
-                <button className="px-[10px] py-[5px] bg-[dodgerblue] text-[#fff] rounded-[8px]" onClick={() => handleEdit(item)}>Update</button>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-        ))}
+      <div className="overflow-hidden rounded-xl shadow-md border border-gray-200 bg-white mt-[40px]">
+        <table className="w-full border-collapse">
+          <thead className="bg-gradient-to-r from-slate-800 to-slate-700 text-white">
+            <tr>
+              <th className="px-4 py-3 text-left">N#</th>
+              <th className="px-4 py-3 text-left">Category</th>
+              <th className="px-4 py-3 text-left">Created By</th>
+              <th className="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.data?.map((item: any, inx: number) => (
+              <tr
+                key={item.id}
+                className="odd:bg-gray-50 even:bg-white hover:bg-slate-100 transition"
+              >
+                <td className="px-4 py-3 font-medium text-slate-600">
+                  {inx + 1}
+                </td>
+                <td className="px-4 py-3 font-medium">{item.name}</td>
+                <td className="px-4 py-3">{item.user.fname}</td>
+                {UserId === item?.user?.id ? (
+                  <td className="px-4 py-3 flex items-center justify-center gap-3">
+                    <button
+                      className="px-3 py-1.5 text-sm font-medium rounded-lg text-[#d00000] border"
+                      onClick={() => deleteCategoryMutate(item.id)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="px-3 py-1.5 border text-sm font-medium text-[dodgerblue] rounded-lg      "
+                      onClick={() => handleEdit(item)}
+                    >
+                      Update
+                    </button>
+                  </td>
+                ) : (
+                  <td className="px-4 py-3 text-center text-gray-400">—</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

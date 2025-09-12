@@ -20,7 +20,7 @@ const DashboardLayout = () => {
     <div className="flex h-screen">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
-        <header className="w-full  py-[20px] bg-slate-600 sticky top-0 pr-[20px]">
+        <header className="w-full  py-[20px] bg-slate-600 sticky top-0 z-30 pr-[20px]">
           <div className="flex items-center justify-between">
             <div className="boder">
               <Menu className="text-[#fff]  w-[35px] h-[35px]" />
