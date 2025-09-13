@@ -177,7 +177,7 @@ const ProductItem = () => {
                     fileList={fileList}
                     onChange={handleChange}
                   >
-                    {fileList.length >= 8 ? null : uploadButton}
+                    {fileList.length >= 8 ? <></> : uploadButton}
                   </Upload>
                 </Form.Item>
 
