@@ -9,6 +9,7 @@ export const useCategory = () => {
     useQuery<any, any>({
       queryKey: [userKey],
       queryFn: () => api.get("category").then((res) => res.data),
+      staleTime: 1000 * 60 * 5,
     });
   const deleteCategory = () =>
     useMutation({
