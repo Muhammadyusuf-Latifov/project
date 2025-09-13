@@ -217,7 +217,7 @@ const ProductItem = () => {
                 )}
               </div>
               <div className="px-[15px] py-[8px]">
-                <h3 className="text-[18px] font-medium">{item.title}</h3>
+                <h3 className="text-[18px] line-clamp-1 font-medium" title={item.title}>{item.title}</h3>
                 <p
                   className="line-clamp-1 text-[#989898]"
                   title={item.description}
@@ -229,7 +229,10 @@ const ProductItem = () => {
                   className="line-clamp-2 text-[#35789a] font-medium"
                   title={item.user.email}
                 >
-                  Created by: {item.user.email}
+                  Created by:{" "}
+                  {profile?.data?.id === item?.user?.id
+                    ? "you"
+                    : item.user.email}
                 </p>
                 {profile?.data?.id === item?.user?.id ? (
                   <button
