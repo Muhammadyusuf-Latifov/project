@@ -152,7 +152,7 @@ const ProductItem = () => {
                 </Form.Item>
                 <Form.Item
                   label="Brand"
-                  name="brand "
+                  name="brand"
                   rules={[
                     { required: true, message: "Please enter product brand" },
                   ]}
