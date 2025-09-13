@@ -172,6 +172,7 @@ const ProductItem = () => {
                 </Form.Item>
                 <Form.Item label="Upload the images">
                   <Upload
+                    multiple
                     listType="picture-card"
                     beforeUpload={() => false}
                     fileList={fileList}
