@@ -218,7 +218,12 @@ const ProductItem = () => {
                 )}
               </div>
               <div className="px-[15px] py-[8px]">
-                <h3 className="text-[18px] line-clamp-1 font-medium" title={item.title}>{item.title}</h3>
+                <h3
+                  className="text-[18px] line-clamp-1 font-medium"
+                  title={item.title}
+                >
+                  {item.title}
+                </h3>
                 <p
                   className="line-clamp-1 text-[#989898]"
                   title={item.description}
