@@ -9,6 +9,7 @@ const Product = lazy(() => import("../features/products/pages/Product"));
 const Statistic = lazy(() => import("../features/statistic/pages/Statistic"));
 const User = lazy(() => import("../features/user/pages/User"));
 const Category = lazy(() => import("../features/products/pages/Category"));
+const Profile = lazy(() => import("../features/profile/pages/profile"));
 const ProductItem = lazy(
   () => import("../features/products/pages/ProductItem")
 );
@@ -44,6 +45,10 @@ const AppRoutes = () => {
             {
               path: "/user",
               element: <User />,
+            },
+            {
+              path: "/profile",
+              element: <Profile />,
             },
           ],
         },

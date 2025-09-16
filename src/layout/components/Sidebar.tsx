@@ -22,6 +22,10 @@ const Sidebar = () => {
           <User/>
           <span>User</span>
         </NavLink>
+        <NavLink className={"link"} to={"/profile"}>
+          <User/>
+          <span>Profile</span>
+        </NavLink>
       </div>
     </div>
   );

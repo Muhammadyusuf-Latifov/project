@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useProduct } from "../service/useProduct";
 import rasm from "../../../shared/assets/image copy.png";
 import { Button, ConfigProvider, Input, Modal, Select, Upload } from "antd";
@@ -11,12 +11,13 @@ import { useAuth } from "../../auth/service/useAuth";
 
 const ProductItem = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState<number>(0);
   const { getProduct, createProduct, deleteProduct } = useProduct();
   const { getCategory } = useCategory();
   const { mutate } = createProduct();
   const { mutate: deleteProductMutate } = deleteProduct();
   const { data: infoCategory } = getCategory();
-  const { data, isFetching } = getProduct(9);
+  const { data, isFetching } = getProduct(9, page);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -30,6 +31,13 @@ const ProductItem = () => {
     value: item.id,
     label: item.name,
   }));
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+
+      behavior: "smooth",
+    });
+  }, [page]);
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -253,6 +261,21 @@ const ProductItem = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex items-center justify-center mt-[20px] gap-[12px]">
+          <button
+            disabled={page == 0}
+            onClick={() => setPage((p) => p - 9)}
+            className="px-[40px] duration-200 py-[12px] text-[#fff] rounded-[12px] bg-[dodgerblue] hover:bg-[#0979d4] disabled:bg-[#7096bb] "
+          >
+            Previous page
+          </button>
+          <button
+            onClick={() => setPage((p) => p + 9)}
+            className="px-[40px] text-[#fff] duration-200 py-[12px] rounded-[12px] bg-[dodgerblue] hover:bg-[#0979d4]"
+          >
+            Next Page
+          </button>
         </div>
       </div>
     );
