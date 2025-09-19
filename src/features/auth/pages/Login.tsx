@@ -14,22 +14,29 @@ type FieldType = {
 
 const Login = () => {
   const { signIn } = useAuth();
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const {user} = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     signIn.mutate(values, {
       onSuccess: (res) => {
-        dispatch(setToken(res.data))
-       if (res.data.user.role === "user") {
-        open("")
-       }
-      }
-    })
+        dispatch(setToken(res.data.accessToken));
+        if (res.data.user.role === "user") {
+          open(
+            `https://production-lilac.vercel.app/verify?q=${btoa(
+              JSON.stringify(values)
+            )}`
+          );
+        } else {
+          navigate("/");
+        }
+        dispatch(removeUser());
+      },
+    });
   };
 
-  const message = signIn.error?.response?.data?.message 
+  const message = signIn.error?.response?.data?.message;
 
   const errorMessage =
     typeof message === "string"
@@ -45,7 +52,9 @@ const Login = () => {
           onFinish={onFinish}
           autoComplete="off"
           layout="vertical"
-          initialValues={user ? {email: user.email, password: user.password} : {}}
+          initialValues={
+            user ? { email: user.email, password: user.password } : {}
+          }
         >
           <Form.Item<FieldType>
             label="Email"

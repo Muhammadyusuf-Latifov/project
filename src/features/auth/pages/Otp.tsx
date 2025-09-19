@@ -41,12 +41,22 @@ const Otp = () => {
       <div className="max-w-[450px] w-full bg-white p-6 rounded-xl shadow text-center">
         <h2 className="text-2xl font-bold mb-2">Enter verification code</h2>
         <p className="mb-4">{user?.email}</p>
-        <Input.OTP disabled={isPending} formatter={(str) => str.toUpperCase()} onChange={onChange} />
-        <Button onClick={handleSendOtp} className="mt-4">Send OTP</Button>
-        {
-          isError &&
-          <p className="text-center text-red-500 mt-4 text-sm">{error?.response?.data?.message}</p>
-        }
+        <Input.OTP
+          className=""
+          disabled={isPending}
+          formatter={(str) => str.toUpperCase()}
+          onChange={onChange}
+        />
+        <div>
+          <Button onClick={handleSendOtp} className="mt-4 block">
+            Send OTP
+          </Button>
+        </div>
+        {isError && (
+          <p className="text-center text-red-500 mt-4 text-sm">
+            {error?.response?.data?.message}
+          </p>
+        )}
       </div>
     </div>
   );
