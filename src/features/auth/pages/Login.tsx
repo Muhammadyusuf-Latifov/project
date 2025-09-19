@@ -22,8 +22,9 @@ const Login = () => {
     signIn.mutate(values, {
       onSuccess: (res) => {
         dispatch(setToken(res.data))
-        dispatch(removeUser())
-        navigate("/")
+       if (res.data.user.role === "user") {
+        open("")
+       }
       }
     })
   };
