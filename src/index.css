@@ -1,31 +1,79 @@
 @import "tailwindcss";
-.link.active {
-  background: #607b8caf;
-  padding-left: 23px;
+
+.sidebar-orqa {
+  background: #060b2672;
+
+  background: linear-gradient(
+    95deg,
+    rgba(26, 31, 55, 1) 0%,
+    rgba(6, 11, 20, 0.2) 100%
+  );
 }
-.link {
-  padding: 18px 20px;
-  margin-bottom: 8px;
-  background: #8196a544;
-  border-radius: 6px;
+.dash-head {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(
+    95deg,
+    rgba(26, 31, 55, 0.4) 0%,
+    rgba(17, 32, 59, 0.9) 100%
+  );
+  height: 70px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  border: 0.5px solid transparent;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.link {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   transition: 0.2s;
+  padding: 12px 16px;
+  border-radius: 15px;
+  margin-bottom: 4px;
 }
 .link:hover {
-  background: #607b8caf;
-  padding-left: 23px;
+  background: #1a1f37ba;
 }
-.tabLink {
-  padding: 12px;
-  border-bottom: 2px solid transparent;
-  font-size: 18px;
-  color: #286070;
+.link.active {
+  background: #1a1f37ba;
+}
+.link.active div {
+  background: #0075ff;
+}
+.link.active div .icon {
+  color: #fff;
 }
 
-.tabLink.active {
-    color: #23cfff;
-  border-bottom :2px solid #23cfff;
+.bg-user {
+  background: linear-gradient(
+    95deg,
+    rgba(5, 28, 70, 0.575) 0%,
+    rgba(6, 21, 49, 0.56) 100%
+  );
+}
+.bg-statistic {
+  background: #060b26bd;
+  background: linear-gradient(
+    184deg,
+    rgba(3, 21, 57, 0.665) 0%,
+    rgba(3, 35, 90, 0.573) 100%
+  );
+}
+.statistic-me {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr;
+  gap: 20px;
+}
+.charts {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr;
+  gap: 20px;
 }

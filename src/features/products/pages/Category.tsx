@@ -3,6 +3,7 @@ import { memo, useState } from "react";
 import { useCategory } from "../service/useCategory";
 import { useAuth } from "../../auth/service/useAuth";
 import { ThreeDot } from "react-loading-indicators";
+import { Trash2, SquarePen } from "lucide-react";
 
 const Category = () => {
   const [editCategory, setEditCategory] = useState<any>(null);
@@ -20,7 +21,8 @@ const Category = () => {
 
   const [form] = Form.useForm();
 
-  const UserId = profile?.data?.id;
+  const me = profile?.data;
+  console.log(me);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -57,8 +59,8 @@ const Category = () => {
   } else {
     return (
       <div className="Category">
-        <div className="flex items-center justify-between">
-          <h2 className="text-[24px] text-slate-600">Category</h2>
+        <div className="flex items-center justify-end">
+          
           <ConfigProvider
             theme={{
               components: {
@@ -66,7 +68,7 @@ const Category = () => {
                   defaultBg: "#46c61f",
                   defaultColor: "#fff",
                   defaultBorderColor: "#46c61f",
-                  defaultHoverBg: "#fff",
+                  defaultHoverBg: "transparent",
                   defaultHoverColor: "#46c61f",
                   defaultHoverBorderColor: "#46c61f",
                   defaultActiveBg: "#e6f7ec",
@@ -115,44 +117,70 @@ const Category = () => {
             </Modal>
           </ConfigProvider>
         </div>
-        <div className="overflow-hidden rounded-xl shadow-md border border-gray-200 bg-white mt-[40px]">
+        <div className="bg-user pt-[30px]   overflow-hidden rounded-xl shadow-md px-[12px]   mt-[40px]">
+          <p className="pl-[15px] text-[18px] text-[#fff] font-bold">
+            Category Table
+          </p>
           <table className="w-full border-collapse">
-            <thead className="bg-gradient-to-r from-slate-800 to-slate-700 text-white">
-              <tr>
-                <th className="px-4 py-3 text-left">N#</th>
-                <th className="px-4 py-3 text-left">Category</th>
-                <th className="px-4 py-3 text-left">Created By</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+            <thead className="user-table text-[#A0AEC0] text-[14px] mb-[20px] ">
+              <tr className="border-b border-b-[#56577A]">
+                <th className="px-4 py-[20px] text-left">N#</th>
+                <th className="px-4 py-[20px] text-left">Category</th>
+                <th className="px-4 py-[20px] text-left">Created By</th>
+
+                <th className="px-4 py-[20px] text-left">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-[#ddd] text-[14px] font-light">
               {data?.data?.map((item: any, inx: number) => (
-                <tr
-                  key={item.id}
-                  className="odd:bg-gray-50 even:bg-white hover:bg-slate-100 transition"
-                >
-                  <td className="px-4 py-3 font-medium text-slate-600">
+                <tr key={item.id} className="border-b border-b-[#56577A]">
+                  <td className="px-4 py-[20px] font-medium text-[#ddd]">
                     {inx + 1}
                   </td>
-                  <td className="px-4 py-3 font-medium">{item.name}</td>
-                  <td className="px-4 py-3">{item.user.fname}</td>
-                  {UserId === item?.user?.id ? (
-                    <td className="px-4 py-3 flex items-center justify-center gap-3">
+                  <td className="px-4 py-[15px] font-medium">
+                    <p className="text-[16px]">{item?.name}</p>
+                  </td>
+                  <td className="px-4 py-[15px] font-medium">
+                    <p className="text-[16px] ">
+                      {item?.user.fname ? item?.user?.fname : "unknown"}
+                    </p>
+                    <p className="text-12px] text-[#a6a6a6]">
+                      {item?.user?.email}
+                    </p>
+                  </td>
+
+                  {me?.role === "owner" ? (
+                    <td className="px-4 py-[20px] text-center flex items-center gap-[8px] text-gray-400">
                       <button
-                        className="px-3 py-1.5 text-sm font-medium rounded-lg text-[#d00000] border"
                         onClick={() => deleteCategoryMutate(item.id)}
+                        className="w-[35px] flex items-center justify-center h-[35px] rounded-full bg-[#c20101] duration-150 hover:bg-[#ce1515]"
                       >
-                        Delete
+                        <Trash2 className="text-[#fff] w-[20px] h-[20px]" />
                       </button>
                       <button
-                        className="px-3 py-1.5 border text-sm font-medium text-[dodgerblue] rounded-lg      "
                         onClick={() => handleEdit(item)}
+                        className="w-[35px] flex items-center justify-center h-[35px] rounded-full bg-[dodgerblue] duration-150 hover:opacity-[.8]"
                       >
-                        Update
+                        <SquarePen className="text-[#fff] w-[20px] h-[20px]" />
+                      </button>
+                    </td>
+                  ) : me?.id === item?.user?.id ? (
+                    <td className="px-4 py-[20px] text-center flex items-center gap-[8px] text-gray-400">
+                      <button
+                        onClick={() => deleteCategoryMutate(item.id)}
+                        className="w-[35px] flex items-center justify-center h-[35px] rounded-full bg-[#c20101] duration-150 hover:bg-[#ce1515]"
+                      >
+                        <Trash2 className="text-[#fff] w-[20px] h-[20px]" />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="w-[35px] flex items-center justify-center h-[35px] rounded-full bg-[dodgerblue] duration-150 hover:opacity-[.8]"
+                      >
+                        <SquarePen className="text-[#fff] w-[20px] h-[20px]" />
                       </button>
                     </td>
                   ) : (
-                    <td className="px-4 py-3 text-center text-gray-400">—</td>
+                    <td className="px-4 py-3 pl-[40px] text-gray-400">—</td>
                   )}
                 </tr>
               ))}

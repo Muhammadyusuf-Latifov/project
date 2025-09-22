@@ -8,11 +8,13 @@ export const useProduct = () => {
 
   const getProduct = (limit?: number, skip?: number) =>
     useQuery({
-      queryKey: [userKey, limit, skip], 
+      queryKey: [userKey, limit, skip],
       queryFn: () =>
         api
-          .get("product", { params: { limit, skip } }) 
+          .get("product", { params: { limit, skip } })
           .then((res) => res.data.data),
+      
+     
     });
 
   const deleteProduct = () =>
@@ -34,10 +36,11 @@ export const useProduct = () => {
 
   const updateProduct = () =>
     useMutation({
-      mutationFn: ({ id, ...body }: { id: string; name: string }) =>
-        api.patch(`product/${id}`, body).then((res) => res.data),
+      mutationFn: ({ id, data }: { id: string; data: any }) =>
+        api.patch(`product/${id}`, data).then((res) => res.data),
       onSuccess: () => QueryClient.invalidateQueries({ queryKey: [userKey] }),
     });
+
 
   return { getProduct, deleteProduct, createProduct, updateProduct };
 };

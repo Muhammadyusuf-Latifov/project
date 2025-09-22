@@ -1,29 +1,66 @@
 import { memo } from "react";
-import logo from "../../shared/assets/logo.png";
-import { NavLink } from "react-router-dom";
-import { ShoppingBasket, User, ChartNoAxesCombined } from "lucide-react";
+
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  ShoppingBasket,
+  User,
+  ChartNoAxesCombined,
+  UserPen,
+} from "lucide-react";
+import { useAuth } from "../../features/auth/service/useAuth";
 const Sidebar = () => {
+  const { getProfile } = useAuth();
+  const { data, isFetching } = getProfile();
+  const navigate = useNavigate();
+
+  const me = data?.data;
   return (
-    <div className="w-[250px] h-screen bg-slate-600 text-white">
-      <div className="mt-[8px] ml-[12px] flex items-center ">
-        <img className="block w-[70px] " loading="eager" src={logo} alt="" />
-        <h2 className="text-[#23cfff] text-[22px] mt-[32px]">e-commerce</h2>
+    <div className="sidebar-orqa w-[250px] relative z-0 h-screen  text-white">
+      <div
+        className="mt-[14px] cursor-pointer ml-[12px] flex items-center  gap-[12px]"
+        onClick={() => navigate("/profile")}
+      >
+        <div className="bg-[#1e8fff2b] w-[50px] h-[50px] flex items-center justify-center rounded-full">
+          <p className="text-[18px] font-bold">{me?.fname?.slice(0, 1)}</p>
+        </div>
+        <div>
+          {isFetching ? (
+            <>
+              <h2>Name</h2> <p>role</p>
+            </>
+          ) : (
+            <>
+              <h2> {me?.fname}</h2>
+              <p>{me?.role}</p>
+            </>
+          )}
+        </div>
       </div>
-      <div className="mt-[20px] flex flex-col p-[10px]">
+      <div className="bg-[#c6c6c6] h-[1.5px] max-w-[220px] border-0 rounded-[200%] w-[100%] mx-auto mt-[10px]"></div>
+      <div className=" flex flex-col p-[10px]">
         <NavLink className={"link"} to={"/"}>
-          <ChartNoAxesCombined />
+          <div className=" p-[6px] bg-[#252b4a] rounded-[12px] flex items-center justify-center">
+            <ChartNoAxesCombined className="icon text-[#0075FF]" />
+          </div>
           <span>Statistic</span>
         </NavLink>
+
         <NavLink className={"link"} to={"/product"}>
-          <ShoppingBasket/>
+          <div className=" p-[6px] bg-[#252b4a] rounded-[12px] flex items-center justify-center">
+            <ShoppingBasket className="icon text-[#0075FF]" />
+          </div>
           <span>Product</span>
         </NavLink>
         <NavLink className={"link"} to={"/user"}>
-          <User/>
+          <div className=" p-[6px] bg-[#252b4a] rounded-[12px] flex items-center justify-center">
+            <User className="icon text-[#0075FF]" />
+          </div>
           <span>User</span>
         </NavLink>
         <NavLink className={"link"} to={"/profile"}>
-          <User/>
+          <div className=" p-[6px] bg-[#252b4a] rounded-[12px] flex items-center justify-center">
+            <UserPen className="icon text-[#0075FF]" />
+          </div>
           <span>Profile</span>
         </NavLink>
       </div>

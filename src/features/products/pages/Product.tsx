@@ -33,24 +33,22 @@ const Product = () => {
         theme={{
           components: {
             Tabs: {
-              colorPrimary: "#23cfff",
-              colorPrimaryHover: "#23cfff",
-              inkBarColor: "#23cfff",
-              itemActiveColor: "#23cfff",
+              colorPrimary: "#80B3FF",
+              colorPrimaryHover: "#80B3FF",
+              inkBarColor: "#80B3FF",
+              itemActiveColor: "#80B3FF",
               titleFontSize: 18,
-              itemColor: "#286070",
-              cardBg: "#fff"
+              itemColor: "#fff",
+              cardBg: "#fff",
             },
           },
         }}
       >
-        <div className="mt-[4px]">
+        <div className="mt-[4px] ">
           <Tabs activeKey={locate} onChange={onChange} items={items} />
         </div>
       </ConfigProvider>
-      <div>
-        
-      </div>
+     
     </>
   );
 };
