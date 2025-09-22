@@ -8,7 +8,7 @@ type Props = {
 
 export default function BackgroundGradient({
   children,
-  className = "",
+  className = "bg-all",
 }: Props) {
   return (
     <div className={`${styles.root} ${className}`}>
