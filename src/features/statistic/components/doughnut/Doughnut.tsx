@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DoughnutChart = () => {
-  const [dummy, setDummy] = useState<any>(null);
+  const [dummy, setDummy] = useState<any>([]);
   const [skip, setSkip] = useState<number>(0);
   useEffect(() => {
     axios
