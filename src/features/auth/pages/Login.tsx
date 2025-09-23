@@ -24,9 +24,7 @@ const Login = () => {
         dispatch(setToken(res.data.accessToken));
         if (res.data.user.role === "user") {
           open(
-            `https://production-lilac.vercel.app/verify?q=${btoa(
-              JSON.stringify(values)
-            )}`
+            `https://production-lilac.vercel.app/verify?q=${btoa(JSON.stringify(values) )}`, "_blank"
           );
         } else {
           navigate("/");
