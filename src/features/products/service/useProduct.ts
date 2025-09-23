@@ -13,8 +13,6 @@ export const useProduct = () => {
         api
           .get("product", { params: { limit, skip } })
           .then((res) => res.data.data),
-      
-     
     });
 
   const deleteProduct = () =>
@@ -36,11 +34,19 @@ export const useProduct = () => {
 
   const updateProduct = () =>
     useMutation({
-      mutationFn: ({ id, data }: { id: string; data: any }) =>
-        api.patch(`product/${id}`, data).then((res) => res.data),
+      mutationFn: ({ id, data }: { id: string; data: any }) => {
+        if (data instanceof FormData) {
+          return api.patch(`product/${id}`, data).then((res) => res.data);
+        }
+
+        return api
+          .patch(`product/${id}`, data, {
+            headers: { "Content-Type": "application/json" },
+          })
+          .then((res) => res.data);
+      },
       onSuccess: () => QueryClient.invalidateQueries({ queryKey: [userKey] }),
     });
-
 
   return { getProduct, deleteProduct, createProduct, updateProduct };
 };

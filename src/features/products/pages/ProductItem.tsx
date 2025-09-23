@@ -25,7 +25,6 @@ const ProductItem = () => {
   const [editProduct, setEditProduct] = useState<any>(null);
   const { mutate: updateProductMutate } = updateProduct();
 
-  const images = files && Array.from(files);
   const { getProfile } = useAuth();
   const { data: profile } = getProfile();
   const me = profile?.data;
@@ -44,7 +43,6 @@ const ProductItem = () => {
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-
     const fList = newFileList
       .map((file) => file.originFileObj as File)
       .filter(Boolean);
@@ -72,7 +70,7 @@ const ProductItem = () => {
       const mappedFiles: UploadFile[] = item.images.map(
         (img: string, index: number): UploadFile => ({
           uid: String(index),
-          name: `image-${index}`,
+          name: img, // 🔑 asl filename shu bo‘lsin
           status: "done",
           url: `https://api.errorchi.uz/product/image/${img}`,
         })
@@ -97,41 +95,37 @@ const ProductItem = () => {
   };
 
   const onFinish = (values: any) => {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("stock", values.stock);
+    formData.append("price", values.price);
+    formData.append("description", values.description || "");
+    formData.append("brand", values.brand || "");
+    formData.append("categoryId", values.categoryId);
+
     if (editProduct) {
-      if (files.length > 0) {
-        const formData = new FormData();
-        formData.append("title", values.title);
-        formData.append("stock", values.stock);
-        formData.append("price", values.price);
-        formData.append("description", values.description || "");
-        formData.append("brand", values.brand || "");
-        formData.append("categoryId", values.categoryId);
-        images?.forEach((file) => {
-          formData.append("images", file);
-        });
-        updateProductMutate({ id: editProduct?.id, data: formData });
-      } else {
-        const body = {
-          ...values,
-          images: fileList.map((f) =>
-            f.url ? f.url.split("/").pop() : f.name
-          ),
-        };
-        updateProductMutate({ id: editProduct?.id, ...body });
-      }
+      // 🟢 UPDATE
+      // Eski rasmlarni qo‘shamiz
+      fileList.forEach((f) => {
+        if (f.url) {
+          formData.append("images", f.name); // 🔑 backend filename kutadi
+        }
+      });
+
+      // Yangi rasmlarni qo‘shamiz
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      updateProductMutate({ id: editProduct?.id, data: formData });
     } else {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("stock", values.stock);
-      formData.append("price", values.price);
-      formData.append("description", values.description || "");
-      formData.append("brand", values.brand || "");
-      formData.append("categoryId", values.categoryId);
-      images?.forEach((file) => {
+      // 🟢 CREATE
+      files.forEach((file) => {
         formData.append("images", file);
       });
       mutate(formData);
     }
+
     form.resetFields();
     setEditProduct(null);
     setFileList([]);
